@@ -1,3 +1,5 @@
+import regex as re
+
 input = """nine92jnhgqzctpgbcbpz
     sevensddvc73three
     9986fmfqhdmq8
@@ -1013,4 +1015,33 @@ for line in input_string_array:
                 second_number = int(letter)
     line_sums += (int(str(first_number) + str(second_number)))
 
-print(line_sums) 
+print(line_sums)
+
+# -------------------------------------------------------------------------------
+
+num_map = {
+    "zero": 0,
+    "one": 1,
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six" : 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9
+}
+
+total = 0
+
+for line in input_string_array:
+    line = line.strip()
+    digits = re.findall(r'\d|zero|one|two|three|four|five|six|seven|eight|nine', line, overlapped=True)
+
+    for i in range(len(digits)):
+        if digits[i].isnumeric() == False:
+            digits[i] = num_map.get(digits[i])
+    
+    total += int(str(digits[0]) + str(digits[-1]))
+
+print(total)

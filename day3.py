@@ -14,4 +14,5 @@ for pos, row in enumerate(board):
         for t_row_char in edge & chars.keys():
             chars[t_row_char].append(int(match.group()))
 
-print(sum(sum(p)    for p in chars.values()))
+print(sum(sum(p)    for p in chars.values()),
+      sum(math.prod(p) for p in chars.values() if len(p) == 2))

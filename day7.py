@@ -4,8 +4,9 @@ hands_bets = open("day7.txt").read().rstrip()
 
 def hand_type(hand):
     c = Counter(hand)
-    counts = sorted(c.values())
-
+    counts = [0] if (jokers := c.pop("*", 0)) == 5 else sorted(c.values())
+    # The most efficient use of a joker is always as the most common non-joker card
+    counts[-1] += jokers
     match counts:
         case *_, 5:
             return 7
@@ -37,3 +38,6 @@ def solve(data):
 
 # Part 1
 print(solve(hands_bets))
+
+# Part 2
+print(solve(hands_bets.replace("J", "*")))

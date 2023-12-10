@@ -54,3 +54,46 @@ max_distance = max(encountered_places.values())
 
 
 print(max_distance)
+
+def get_piece_type(i, j):
+    reachable_directions = []
+    for direction in directions:
+        di, dj, opposite = directions[direction]
+        if i + di < 0 or i + di >= len(map):
+            continue
+        if j + dj < 0 or j + dj >= len(map[i + di]):
+            continue
+        if (i + di, j + dj) not in encountered_places:
+            continue
+        target = map[i + di][j + dj]
+        if target not in pipe_types:
+            continue
+        target_directions = pipe_types[target]
+        if opposite not in target_directions:
+            continue
+        reachable_directions.append(direction)
+    for piece_type in pipe_types:
+        if len(reachable_directions) == len(pipe_types[piece_type]):
+            if all([direction in pipe_types[piece_type] for direction in reachable_directions]):
+                return piece_type
+    return None
+
+map[start[0]][start[1]] = get_piece_type(start[0], start[1])
+
+for i in range(len(map)):
+    norths = 0
+    for j in range(len(map[i])):
+        place = map[i][j]
+        if (i,j) in encountered_places:
+            pipe_directions = pipe_types[place]
+            if "n" in pipe_directions:
+                norths += 1
+            continue
+        if norths % 2 == 0:
+            map[i][j] = "O"
+        else:
+            map[i][j] = "I"
+
+
+inside_count = "\n".join(["".join(line) for line in map]).count("I")
+print(inside_count)
